@@ -30,11 +30,11 @@ public class HelloController {
 
 	@PostMapping
 	public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "new";
-		}
+//		if (bindingResult.hasErrors()) {
+//			return "new";
+//		}
 		userService.save(user);
-		return "redirect:/users";
+		return "redirect:/admin/users";
 	}
 
 	@GetMapping("/{id}/edit")
@@ -50,12 +50,12 @@ public class HelloController {
 			return "edit";
 		}
 		userService.edit(user);
-		return "redirect:/users";
+		return "redirect:/admin/users";
 	}
 
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") int id) {
 		userService.deleteById(id);
-		return "redirect:/users";
+		return "redirect:/admin/users";
 	}
 }

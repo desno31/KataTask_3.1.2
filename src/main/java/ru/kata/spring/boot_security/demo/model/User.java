@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -17,6 +20,12 @@ public class User {
 //    @NotEmpty(message = "Username should not be empty")
 //    @Size(min = 2, max = 15, message = "Name should be between 2 and 15 characters")
     private String username;
+
+    @Column(name = "last_name")
+    private String lastname;
+
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "password")
 //    @NotEmpty(message = "Password should not be empty")
@@ -82,4 +91,21 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
 }
