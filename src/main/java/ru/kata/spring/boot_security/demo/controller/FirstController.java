@@ -45,4 +45,10 @@ public class FirstController {
         model.addAttribute("user", user);
         return "user_info";
     }
+
+    @GetMapping("/hello")
+    public String starterPage() {
+        return "Jquery";
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,21 +37,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void deleteById(long id) {
-        userRepository.deleteById(id);
+    public void deleteById(long id) {userRepository.deleteById(id);
     }
 
     public User getById(long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void edit(User updatedUser) {
         userRepository.save(updatedUser);
-    }
-
-    public String getUserNameFromSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
     }
 
     @Override
