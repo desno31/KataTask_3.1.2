@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -11,7 +13,7 @@ import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/testJSON")
+@RequestMapping("/api")
 public class MyRestController {
 
     //нет обработки ошибок
@@ -28,6 +30,13 @@ public class MyRestController {
     public ResponseEntity<HttpStatus> create(@RequestBody User user) {
         userService.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        return user;
     }
 
     @GetMapping

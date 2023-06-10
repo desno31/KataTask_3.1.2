@@ -1,6 +1,8 @@
+const REST_URL = 'http://localhost:8080/api';
+
 async function getUsers() {
     try {
-        const response = await fetch('http://localhost:8080/testJSON', {
+        const response = await fetch(REST_URL, {
             method: 'GET',
             headers: {
                 accept: 'application/json',
@@ -19,9 +21,9 @@ async function getUsers() {
 }
 
 //not done yet
-async function getLogedUser() {
+async function getCurrentUser() {
     try {
-        const response = await fetch('http://localhost:8080/testJSON', {
+        const response = await fetch(REST_URL + '/user', {
             method: 'GET',
             headers: {
                 accept: 'application/json',
@@ -31,7 +33,6 @@ async function getLogedUser() {
         if (!response.ok) {
             throw new Error(`Error! status: ${response.status}`);
         }
-
         const result = await response.json();
         return result;
     } catch (err) {
@@ -42,7 +43,7 @@ async function getLogedUser() {
 async function getUserById(id) {
 
     try {
-        const response = await fetch('http://localhost:8080/testJSON/' + id, {
+        const response = await fetch(REST_URL + "/" + id, {
             method: 'GET',
             headers: {
                 accept: 'application/json',
@@ -62,7 +63,7 @@ async function getUserById(id) {
 
 async function deleteUserById(id) {
     try {
-        const response = await fetch('http://localhost:8080/testJSON/' + id, {
+        const response = await fetch(REST_URL + "/" + id, {
             method: 'DELETE',
             headers: {
                 accept: 'application/json',
@@ -82,7 +83,7 @@ async function deleteUserById(id) {
 
 async function createUser(user) {
     try {
-        const response = await fetch('http://localhost:8080/testJSON', {
+        const response = await fetch(REST_URL, {
             method: 'POST',
             headers: {
                 accept: 'application/json',
@@ -105,7 +106,7 @@ async function createUser(user) {
 async function editUser(user, id) {
 
     try {
-        const response = await fetch('http://localhost:8080/testJSON/' + id, {
+        const response = await fetch(REST_URL + "/" + id, {
             method: 'PATCH',
             headers: {
                 accept: 'application/json',
@@ -142,6 +143,7 @@ const userBlank = {
 
 //Заполение таблицы пользователей
 function createTableBody() {
+    console.log("createTableBody start")
     let usersList = getUsers()
     usersList.then(array => {
         let rows = array.length;
@@ -165,12 +167,45 @@ function createTableBody() {
             cellEmail.innerHTML = user.email;
             let userRole = "";
             for (let k = 0; k < user.roles.length; k++) {
-                userRole = userRole + "  " + user.roles[k].name;
+                userRole = userRole + "  " + convertRole(user.roles[k].name);
             }
             cellRole.innerHTML = userRole;
             cellEditButton.appendChild(createButton("edit", user.id));
             cellDeleteButton.appendChild(createButton("delete", user.id));
         }
+        console.log("createTableBody ends")
+    })
+}
+function createTitle() {
+    let user = getCurrentUser()
+    user.then((user) => {
+        let title = document.querySelector("#title")
+        title.innerHTML=`${user.email} with role ${user.roles.length === 2 ? "Admin" : "User"}`
+    })
+}
+
+function createCurrentUserTable() {
+    let user = getCurrentUser()
+    user.then((user) => {
+        console.log(user)
+        let table = document.querySelector("#currentUserTable")
+        let row = table.insertRow(-1);
+        let cellId = row.insertCell(0);
+        let cellUsername = row.insertCell(1);
+        let cellLastname = row.insertCell(2);
+        let cellAge = row.insertCell(3);
+        let cellEmail = row.insertCell(4);
+        let cellRole = row.insertCell(5);
+        cellId.innerHTML = user.id;
+        cellUsername.innerHTML = user.username;
+        cellLastname.innerHTML = user.lastname;
+        cellAge.innerHTML = user.age;
+        cellEmail.innerHTML = user.email;
+        let userRole = "";
+        for (let k = 0; k < user.roles.length; k++) {
+            userRole = userRole + "  " + convertRole(user.roles[k].name);
+        }
+        cellRole.innerHTML = userRole;
     })
 }
 
@@ -201,6 +236,7 @@ function updateTable() {
         }
         createTableBody()
     })
+    console.log("konec update table")
 }
 
 //модальное окно удаления
@@ -216,6 +252,9 @@ $('#deleteModalForm').on('show.bs.modal', function (event) {
         modal.find('#disabledAge').val(user.age)
         modal.find('#disabledEmail').val(user.email)
         let form = document.querySelector('#deleteForm')
+        console.log(
+            form
+        )
         $("#deleteForm").unbind('submit').on("submit", (event) => {
             event.preventDefault()
             deleteUserById(user.id)
@@ -240,6 +279,7 @@ $('#editModalForm').on('show.bs.modal', function (event) {
         modal.find('#editLastname').val(user.lastname)
         modal.find('#editAge').val(user.age)
         modal.find('#editEmail').val(user.email)
+        modal.find('#editPassword').val(user.password)
 
         if (user.roles.length === 1) {
             modal.find('#editRole').selectedIndex = 0
@@ -247,7 +287,9 @@ $('#editModalForm').on('show.bs.modal', function (event) {
             modal.find('#editRole').selectedIndex = 1
         }
         let form = document.querySelector('#editForm')
+        console.log(form)
         $("#editForm").unbind('submit').on("submit", (event) => {
+            console.log("submit of delete button start")
             event.preventDefault()
             const data = new FormData(form)
             const entrData = Object.fromEntries(data.entries())
@@ -258,15 +300,15 @@ $('#editModalForm').on('show.bs.modal', function (event) {
                 .then(() => updateTable())
                 .catch(error => console.error(error));
             $('#editModalForm').modal('toggle')
-            //updateTable()
+            console.log("submit delete button end")
         })
     })
 })
 
 
 //код формы добавления пользователя
-const inputForm = document.getElementById("createUserForm")
-const inputRole = document.getElementById("inputRole")
+const inputForm = document.querySelector("#createUserForm")
+const inputRole = document.querySelector("#inputRole")
 let inputOpt = inputRole.options
 const ROLE_USER = [{"id": 1, "name": "ROLE_USER"}]
 const ROLE_ADMIN = [{"id": 1, "name": "ROLE_USER"}, {"id": 2, "name": "ROLE_ADMIN"}]
@@ -301,5 +343,13 @@ const deleteRole = document.getElementById("disabledRole")
 const deleteOpt = deleteRole.options
 deleteOpt[0].value = JSON.stringify(ROLE_USER)
 deleteOpt[1].value = JSON.stringify(ROLE_ADMIN)
+
+function convertRole(fullRole) {
+    if (fullRole === "ROLE_USER") {
+        return "USER"
+    } else {
+        return "ADMIN"
+    }
+}
 
 

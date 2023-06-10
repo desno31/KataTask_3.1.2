@@ -25,25 +25,16 @@ public class FirstController {
         this.userService = userService;
     }
 
-    @GetMapping("/test")
-    public String test(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        List<User> users = userService.index();
-        model.addAttribute("users", users);
-        model.addAttribute("user", user);
-        model.addAttribute("role", new Role());
-        return "TestBootPage";
+    @GetMapping("/admin")
+    public String test() {
+        return "Jquery";
     }
 
 
     @GetMapping("/user")
     @PreAuthorize("isAuthenticated()")
-    public String getUserPage(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        model.addAttribute("user", user);
-        return "user_info";
+    public String getUserPage() {
+        return "user";
     }
 
     @GetMapping("/hello")
