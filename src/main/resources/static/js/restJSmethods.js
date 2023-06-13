@@ -127,7 +127,6 @@ async function editUser(user, id) {
 
 }
 
-//let usersList = getUsers()
 const columns = 8
 const userBlank = {
     username: "username",
@@ -260,10 +259,13 @@ $('#deleteModalForm').on('show.bs.modal', function (event) {
             deleteUserById(user.id)
                 .then(response => console.log(response.json))
                 .then(data => console.log(data))
-                .then(() => updateTable())
+                .then(() => {
+                    let table = document.getElementById("allUsersTable")
+                    table.deleteRow(-1)
+                    updateTable()
+                })
                 .catch(error => console.error(error));
             $('#deleteModalForm').modal('hide')
-            //updateTable()
         })
     })
 })

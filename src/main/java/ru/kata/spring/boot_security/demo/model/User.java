@@ -1,8 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -50,6 +47,15 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String username, String lastname, int age, String password, String email, Collection<Role> roles) {
+        this.username = username;
+        this.lastname = lastname;
+        this.age = age;
+        this.password = password;
+        this.email = email;
+        this.roles = roles;
     }
 
     public long getId() {
