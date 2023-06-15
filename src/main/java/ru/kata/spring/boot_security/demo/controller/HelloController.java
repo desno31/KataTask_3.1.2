@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +11,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/admin/users")
@@ -21,6 +24,28 @@ public class HelloController {
 	public String index(Model model) {
 		model.addAttribute("users", userService.index());
 		return "index";
+	}
+
+	@GetMapping("/testUser")
+	public String testUser(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		User user = userService.findByUsername(auth.getName());
+		model.addAttribute("user", user);
+		model.addAttribute("users", userService.index());
+		return "userThymeleaf";
+	}
+
+	@GetMapping("/testAdmin")
+	public String testAdmin(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		User blankUser = new User();
+		User user = userService.findByUsername(auth.getName());
+		model.addAttribute("user", user);
+		model.addAttribute("blankUser", blankUser);
+		model.addAttribute("users", userService.index());
+		return "adminThymeleaf";
 	}
 
 	@GetMapping(value = "/new")
