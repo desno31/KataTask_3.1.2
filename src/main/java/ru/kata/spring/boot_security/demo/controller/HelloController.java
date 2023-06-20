@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -43,6 +44,7 @@ public class HelloController {
 		User blankUser = new User();
 		User user = userService.findByUsername(auth.getName());
 		model.addAttribute("user", user);
+
 		model.addAttribute("blankUser", blankUser);
 		model.addAttribute("users", userService.index());
 		return "adminThymeleaf";
@@ -59,7 +61,7 @@ public class HelloController {
 //			return "new";
 //		}
 		userService.save(user);
-		return "redirect:/admin/users";
+		return "redirect:/admin/users/testAdmin";
 	}
 
 	@GetMapping("/{id}/edit")
@@ -75,12 +77,12 @@ public class HelloController {
 			return "edit";
 		}
 		userService.edit(user);
-		return "redirect:/admin/users";
+		return "redirect:/admin/users/testAdmin";
 	}
 
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") int id) {
 		userService.deleteById(id);
-		return "redirect:/admin/users";
+		return "redirect:/admin/users/testAdmin";
 	}
 }

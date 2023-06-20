@@ -18,7 +18,6 @@ public class MyRestController {
 
     //нет обработки ошибок
     //нет валидации
-    //сделать страницу через js
 
     private final UserService userService;
 
