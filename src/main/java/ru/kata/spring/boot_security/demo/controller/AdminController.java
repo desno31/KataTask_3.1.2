@@ -6,16 +6,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/admin/users")
-public class HelloController {
+public class AdminController {
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@GetMapping
 	public String index(Model model) {
