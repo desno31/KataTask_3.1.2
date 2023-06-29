@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/admin/users")
 public class HelloController {
 
 	@Autowired
@@ -27,7 +26,7 @@ public class HelloController {
 		return "index";
 	}
 
-	@GetMapping("/testUser")
+	@GetMapping("/user")
 	public String testUser(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -37,12 +36,19 @@ public class HelloController {
 		return "userThymeleaf";
 	}
 
-	@GetMapping("/testAdmin")
+	@GetMapping("/admin")
 	public String testAdmin(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		User blankUser = new User();
 		User user = userService.findByUsername(auth.getName());
+
+
+/*		model.addAttribute("roleUser", roleUser);
+		model.addAttribute("roleAdmin", roleAdmin);
+		Role[] roles = (Role[])user.getRoles().toArray();
+		Role roleUser = roles[0];
+		Role roleAdmin = roles[1];*/
 		model.addAttribute("user", user);
 
 		model.addAttribute("blankUser", blankUser);
@@ -61,7 +67,7 @@ public class HelloController {
 //			return "new";
 //		}
 		userService.save(user);
-		return "redirect:/admin/users/testAdmin";
+		return "redirect:/admin";
 	}
 
 	@GetMapping("/{id}/edit")
@@ -77,12 +83,12 @@ public class HelloController {
 			return "edit";
 		}
 		userService.edit(user);
-		return "redirect:/admin/users/testAdmin";
+		return "redirect:/admin";
 	}
 
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") int id) {
 		userService.deleteById(id);
-		return "redirect:/admin/users/testAdmin";
+		return "redirect:/admin";
 	}
 }

@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <!--user create form-->
-                                <form th:method="POST" th:action="@{/admin/users}" th:object="${blankUser}"
+                                <form th:method="POST" th:action="@{/}" th:object="${blankUser}"
                                       id="createUserForm">
                                     <div class="mb-3">
                                         <label for="inputFirstName" class="form-label">First name</label>
@@ -223,7 +223,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
-                <form th:method="PATCH" th:action="@{/admin/users/{id}(id=${user.getId()})}" th:object="${user}"
+                <form th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}"
                 id="editForm">
                     <div class="mb-3">
                         <fieldset disabled>
@@ -258,7 +258,7 @@
                     <div class="form-group">
                         <label for="editRole">Role</label>
                         <select class="form-control" id="editRole" th:field="*{roles}" size="2">
-                            <option th:block th:each="role: ${user.roles}"
+                            <option th:block th:each="role: ${user.roles}" th:selected="${role.id==1}"
                                     th:field="*{roles}" th:text="${role.getName() == 'ROLE_USER' ? 'USER' : 'ADMIN'}" th:value="${role.id}"
                                     class="m-2"/>
                             </option>
@@ -273,63 +273,6 @@
         </div>
     </div>
 </div>
-<!--js-->
-<!--
-<div class="modal fade" id="editModalForm" tabindex="-1" aria-labelledby="editFormLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editFormLabel">Edit user</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <div class="mb-3">
-                        <fieldset disabled>
-                            <label for="disabledIdInput" class="form-label">Id</label>
-                            <input type="text" class="form-control" id="disabledIdInput" name="id" value="id">
-                        </fieldset>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editFirstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="editFirstName" name="username" value="username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editLastname" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="editLastname" name="lastname" value="lastname">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAge" class="form-label">Age</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="editAge" name="age" min="0" max="120">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" value="email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="editPassword" name="password">
-                    </div>
-                    <div class="form-group">
-                        <label for="editRole">Role</label>
-                        <select class="form-select" id="editRole" name="roles" size="2">
-                            <option value="0">User</option>
-                            <option value="1">Admin</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary" id="editSubmitButton">Edit user</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
--->
-
 
 <!--Блок удаления пользователя-->
 <div class="modal fade" id="deleteModalForm" tabindex="-1" aria-labelledby="deleteFormLabel" aria-hidden="true">
@@ -340,7 +283,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
-                <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}"  th:object="${user}"
+                <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}"  th:object="${user}"
                 id="deleteForm">
                     <fieldset disabled>
                         <div class="mb-3">
@@ -385,58 +328,6 @@
         </div>
     </div>
 </div>
-<!--js-->
-<!--
-<div class="modal fade" id="deleteModalForm" tabindex="-1" aria-labelledby="deleteFormLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteFormLabel">Delete user</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <form id="deleteForm">
-                    <fieldset disabled>
-                        <div class="mb-3">
-                            <label for="disabledIdDelete" class="form-label">Id</label>
-                            <input type="text" class="form-control" id="disabledIdDelete" name="id" value="id">
-                        </div>
-                        <div class="mb-3">
-                            <label for="disabledFirstName" class="form-label">First name</label>
-                            <input type="text" class="form-control" id="disabledFirstName" name="username"
-                                   value="username">
-                        </div>
-                        <div class="mb-3">
-                            <label for="disabledSecondName" class="form-label">Last name</label>
-                            <input type="text" class="form-control" id="disabledSecondName" name="lastname"
-                                   value="lastname">
-                        </div>
-                        <div class="mb-3">
-                            <label for="disabledAge" class="form-label">Age</label>
-                            <input type="text" class="form-control" id="disabledAge" name="age" value="age">
-                        </div>
-                        <div class="mb-3">
-                            <label for="disabledEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="disabledEmail" name="email" value="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="disabledRole">Role</label>
-                            <select class="form-select" id="disabledRole" name="roles" size="2">
-                                <option value="0">User</option>
-                                <option value="1">Admin</option>
-                            </select>
-                        </div>
-                    </fieldset>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary">Delete user</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
--->
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -474,22 +365,19 @@
         let recipient = button.data('whatever')
         let modal = $(this)
         let userData = getUserById(recipient)
-        console.log(recipient)
         $("#deleteForm").removeAttr("action")
-        console.log($("#deleteForm"))
         $("#deleteForm").attr("action", `${recipient}`)
-        console.log($("#deleteForm"))
         userData.then((user) => {
             modal.find('#disabledIdDelete').val(user.id)
             modal.find('#disabledFirstName').val(user.username)
             modal.find('#disabledSecondName').val(user.lastname)
             modal.find('#disabledAge').val(user.age)
             modal.find('#disabledEmail').val(user.email)
-            if (user.roles.length === 1) {
-                modal.find('#editRole').selectedIndex = 0
+/*            if (user.roles.indexOf('ROLE_ADMIN') === -1) {
+                modal.find('#disabledRole').value = 1
             } else {
-                modal.find('#editRole').selectedIndex = 1
-            }
+                modal.find('#disabledRole').value = 2
+            }*/
         })
     })
     //Модальное окно изменения
@@ -499,9 +387,7 @@
         let modal = $(this)
         let userData = getUserById(recipient)
         $("#editForm").removeAttr("action")
-        console.log($("#editForm"))
         $("#editForm").attr("action", `${recipient}`)
-        console.log($("#editForm"))
         userData.then((user) => {
             modal.find('#disabledIdInput').val(user.id)
             modal.find('#editFirstName').val(user.username)
@@ -509,6 +395,11 @@
             modal.find('#editAge').val(user.age)
             modal.find('#editEmail').val(user.email)
             modal.find('#editPassword').val(user.password)
+/*            if (user.roles.indexOf('ROLE_ADMIN') === -1) {
+                modal.find('#editRole').value = 1
+            } else {
+                modal.find('#editRole').value = 2
+            }*/
         })
     })
 
