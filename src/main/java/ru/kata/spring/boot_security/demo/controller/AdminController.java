@@ -13,7 +13,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.validation.Valid;
 
 @Controller
-public class HelloController {
+public class AdminController {
 
 	@Autowired
 	private UserService userService;
@@ -22,16 +22,6 @@ public class HelloController {
 	public String index(Model model) {
 		model.addAttribute("users", userService.index());
 		return "index";
-	}
-
-	@GetMapping("/user")
-	public String testUser(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		User user = userService.findByUsername(auth.getName());
-		model.addAttribute("user", user);
-		model.addAttribute("users", userService.index());
-		return "userThymeleaf";
 	}
 
 	@GetMapping("/admin")
