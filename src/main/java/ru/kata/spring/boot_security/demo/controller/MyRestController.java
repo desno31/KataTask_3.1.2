@@ -16,9 +16,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class MyRestController {
 
-    //нет обработки ошибок
-    //нет валидации
-
     private final UserService userService;
 
     public MyRestController(UserService userService) {

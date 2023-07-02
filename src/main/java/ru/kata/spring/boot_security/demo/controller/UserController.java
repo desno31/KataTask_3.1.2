@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
-public class FirstController {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public FirstController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
