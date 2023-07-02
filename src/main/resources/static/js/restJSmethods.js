@@ -20,7 +20,6 @@ async function getUsers() {
     }
 }
 
-//not done yet
 async function getCurrentUser() {
     try {
         const response = await fetch(REST_URL + '/user', {
