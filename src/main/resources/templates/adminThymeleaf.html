@@ -312,7 +312,7 @@
                         </div>
                         <div class="form-group">
                             <label for="disabledRole">Role</label>
-                            <select class="form-control" id="disabledRole" th:field="*{roles}" size="2">
+                            <select class="form-control" id="disabledRole" th:field="*{roles}">
                                 <option th:block th:each="role: ${user.roles}"
                                         th:field="*{roles}" th:text="${role.getName() == 'ROLE_USER' ? 'USER' : 'ADMIN'}" th:value="${role.id}" class="m-2"/>
                                 </option>
@@ -373,11 +373,6 @@
             modal.find('#disabledSecondName').val(user.lastname)
             modal.find('#disabledAge').val(user.age)
             modal.find('#disabledEmail').val(user.email)
-/*            if (user.roles.indexOf('ROLE_ADMIN') === -1) {
-                modal.find('#disabledRole').value = 1
-            } else {
-                modal.find('#disabledRole').value = 2
-            }*/
         })
     })
     //Модальное окно изменения
@@ -395,26 +390,8 @@
             modal.find('#editAge').val(user.age)
             modal.find('#editEmail').val(user.email)
             modal.find('#editPassword').val(user.password)
-/*            if (user.roles.indexOf('ROLE_ADMIN') === -1) {
-                modal.find('#editRole').value = 1
-            } else {
-                modal.find('#editRole').value = 2
-            }*/
         })
     })
-
-    /*const ROLE_USER = [{"id": 1, "name": "ROLE_USER"}]
-    const ROLE_ADMIN = [{"id": 1, "name": "ROLE_USER"}, {"id": 2, "name": "ROLE_ADMIN"}]
-
-    const editRole = document.getElementById("editRole")
-    const editOpt = editRole.options
-    editOpt[0].value = JSON.stringify(ROLE_USER)
-    editOpt[1].value = JSON.stringify(ROLE_ADMIN)
-
-    const deleteRole = document.getElementById("disabledRole")
-    const deleteOpt = deleteRole.options
-    deleteOpt[0].value = JSON.stringify(ROLE_USER)
-    deleteOpt[1].value = JSON.stringify(ROLE_ADMIN)*/
 
 </script>
 </body>

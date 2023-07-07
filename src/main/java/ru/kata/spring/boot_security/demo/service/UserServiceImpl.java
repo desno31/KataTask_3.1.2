@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -31,10 +30,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public void save(User user){
         userRepository.save(user);
     }
 
+    @Transactional
     public void deleteById(long id) {userRepository.deleteById(id);
     }
 
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional
     public void edit(User updatedUser) {
         userRepository.save(updatedUser);
     }
