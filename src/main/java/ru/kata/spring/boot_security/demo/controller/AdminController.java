@@ -8,15 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class AdminController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private RoleService roleService;
 
 	@GetMapping
 	public String index(Model model) {
@@ -30,13 +35,6 @@ public class AdminController {
 
 		User blankUser = new User();
 		User user = userService.findByUsername(auth.getName());
-
-
-/*		model.addAttribute("roleUser", roleUser);
-		model.addAttribute("roleAdmin", roleAdmin);
-		Role[] roles = (Role[])user.getRoles().toArray();
-		Role roleUser = roles[0];
-		Role roleAdmin = roles[1];*/
 		model.addAttribute("user", user);
 
 		model.addAttribute("blankUser", blankUser);
@@ -50,7 +48,8 @@ public class AdminController {
 	}
 
 	@PostMapping
-	public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+	public String create(@ModelAttribute("user") @Valid User user
+			, BindingResult bindingResult) {
 //		if (bindingResult.hasErrors()) {
 //			return "new";
 //		}
@@ -66,10 +65,12 @@ public class AdminController {
 
 	@PatchMapping("/{id}")
 	public String update(@ModelAttribute("user") @Valid User user,
-						 BindingResult bindingResult, @PathVariable("id") int id) {
+						 BindingResult bindingResult, @PathVariable("id") int id,
+						 @RequestParam("roles") Long roleId) {
 		if (bindingResult.hasErrors()) {
 			return "edit";
 		}
+		user.setRoles(List.of(roleService.getById(roleId)));
 		userService.edit(user);
 		return "redirect:/admin";
 	}

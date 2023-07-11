@@ -283,11 +283,16 @@ $('#editModalForm').on('show.bs.modal', function (event) {
         modal.find('#editEmail').val(user.email)
         modal.find('#editPassword').val(user.password)
 
+        console.log(user.roles)
+        console.log(modal.find('#editRole').selectedIndex)
         if (user.roles.length === 1) {
             modal.find('#editRole').selectedIndex = 0
+            console.log(modal.find('#editRole').selectedIndex)
         } else {
             modal.find('#editRole').selectedIndex = 1
+            console.log(modal.find('#editRole').selectedIndex)
         }
+        console.log(modal.find('#editRole').selectedIndex)
         let form = document.querySelector('#editForm')
         console.log(form)
         $("#editForm").unbind('submit').on("submit", (event) => {
